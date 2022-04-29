@@ -11,16 +11,54 @@ Author: Diego Feresin
 '''
 
 def main():
-    condition_to_validate = None
+    player = change_player("")
+    dashboard = make_dashboard()
+    while not (has_winner(dashboard) or is_a_draw(dashboard)):
+        show_dashboard(dashboard)
+        make_move(player, dashboard)
+        player = change_player(player)
+    show_dashboard(dashboard)
+    print("We have a winner! Thank you all for playing!") 
 
-    if condition_to_validate:
-        print("")
+def make_dashboard():
+    dashboard = []
+    for square in range(9):
+        dashboard.append(square + 1)
+    return dashboard
 
-    while True:
-        print()
+def show_dashboard(dashboard):
+    print()
+    print(f"{dashboard[0]}|{dashboard[1]}|{dashboard[2]}")
+    print('-+-+-')
+    print(f"{dashboard[3]}|{dashboard[4]}|{dashboard[5]}")
+    print('-+-+-')
+    print(f"{dashboard[6]}|{dashboard[7]}|{dashboard[8]}")
+    print()
+    
+def is_a_draw(dashboard):
+    for square in range(9):
+        if (dashboard[square]) != "X" and dashboard[square] != "O":
+            return False
+    return True 
+    
+def has_winner(dashboard):
+    return (dashboard[0] == dashboard[1] == dashboard[2] or
+            dashboard[3] == dashboard[4] == dashboard[5] or
+            dashboard[6] == dashboard[7] == dashboard[8] or
+            dashboard[0] == dashboard[3] == dashboard[6] or
+            dashboard[1] == dashboard[4] == dashboard[7] or
+            dashboard[2] == dashboard[5] == dashboard[8] or
+            dashboard[2] == dashboard[4] == dashboard[6])
 
-def function_one():
-    return ""
+def make_move(player, dashboard):
+    square = int(input(f"{player}'s turn to choose a square (from 1 to 9): "))
+    dashboard[square - 1] = player
 
-def function_two():
-    return ""
+def change_player(current):
+    if current == "" or current == "O":
+        return "X"
+    elif current == "X":
+        return "O"
+
+if __name__ == "__main__":
+    main()
